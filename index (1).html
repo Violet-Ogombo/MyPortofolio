@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Violet Ogombo — From Bedside to Backend</title>
+<meta name="description" content="Violet Ogombo — Software developer in training, formerly in healthcare. Stockholm.">
+<style>
+
+  :root{
+    --bg:#F7F8FA;
+    --bg-alt:#EEF1F5;
+    --ink:#12172B;
+    --ink-soft:#4A5164;
+    --ink-faint:#8892A6;
+    --coral:#FF5D73;
+    --coral-soft:#FFE4E8;
+    --teal:#00B8A0;
+    --teal-soft:#DFF7F2;
+    --amber:#FFB648;
+    --card:#FFFFFF;
+    --border:#E3E7EE;
+    --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit;}
+  ::selection{background:var(--coral); color:#fff;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    letter-spacing:0.02em;
+    color:var(--teal);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 14px 0;
+  }
+  .eyebrow::before{content:"";}
+  .eyebrow .cursor{
+    display:inline-block; width:8px; height:1em; background:var(--coral);
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{opacity:0;} }
+
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; margin:0; color:var(--ink);}
+  h2{font-size:clamp(1.7rem, 3.2vw, 2.4rem); letter-spacing:-0.01em;}
+  h3{font-size:1.15rem;}
+  p{color:var(--ink-soft); margin:0 0 1em 0;}
+
+  section{padding:88px 0;}
+  section .wrap > .eyebrow{margin-left:2px;}
+
+  /* ---------- Header / Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(247,248,250,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  header.scrolled{border-bottom-color:var(--border); box-shadow:0 2px 18px rgba(18,23,43,0.05);}
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{
+    font-family:var(--font-mono); font-weight:700; font-size:1rem; letter-spacing:-0.02em;
+    text-decoration:none; color:var(--ink);
+    display:flex; align-items:baseline; gap:2px;
+  }
+  .logo span{color:var(--coral);}
+  nav.links{display:flex; gap:30px; list-style:none; margin:0; padding:0;}
+  nav.links a{
+    text-decoration:none; font-size:0.94rem; color:var(--ink-soft); font-weight:500;
+    position:relative; padding:4px 0;
+  }
+  nav.links a::after{
+    content:""; position:absolute; left:0; bottom:-2px; width:0; height:2px;
+    background:var(--coral); transition:width .2s ease;
+  }
+  nav.links a:hover{color:var(--ink);}
+  nav.links a:hover::after{width:100%;}
+
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px;}
+  .burger span{width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .2s ease, opacity .2s ease;}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  .mobile-menu{
+    display:none;
+    max-height:0; overflow:hidden;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    transition:max-height .28s ease;
+  }
+  .mobile-menu.open{max-height:340px;}
+  .mobile-menu ul{list-style:none; margin:0; padding:8px 28px 20px; display:flex; flex-direction:column; gap:4px;}
+  .mobile-menu a{
+    text-decoration:none; color:var(--ink-soft); font-size:1rem; padding:10px 0;
+    border-bottom:1px solid var(--border);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{padding:76px 0 40px;}
+  .hero-tag{
+    font-family:var(--font-mono); font-size:0.85rem; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.4rem); line-height:1.04; letter-spacing:-0.02em;
+    max-width:14ch;
+  }
+  .hero h1 em{
+    font-style:normal; color:var(--coral);
+    background:linear-gradient(180deg, transparent 62%, var(--coral-soft) 62%);
+  }
+  .hero-sub{
+    font-size:1.15rem; max-width:52ch; margin-top:22px; color:var(--ink-soft);
+  }
+  .hero-cta{display:flex; flex-wrap:wrap; gap:14px; margin-top:32px;}
+  .btn{
+    font-family:var(--font-mono); font-size:0.92rem; font-weight:600;
+    padding:13px 22px; border-radius:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; border:1.5px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--ink); color:#fff; box-shadow:0 6px 0 rgba(18,23,43,0.15);}
+  .btn-primary:hover{background:#232a45;}
+  .btn-ghost{border-color:var(--border); color:var(--ink); background:var(--card);}
+  .btn-ghost:hover{border-color:var(--teal); color:var(--teal);}
+
+  /* ---------- Signature EKG-to-code line ---------- */
+  .pulse-wrap{margin:56px 0 8px; width:100%;}
+  .pulse-wrap svg{width:100%; height:auto; overflow:visible;}
+  .pulse-line, .bracket-part{
+    fill:none; stroke-linecap:round; stroke-linejoin:round;
+  }
+  .pulse-line{stroke:var(--coral); stroke-width:3;}
+  .bracket-part{stroke:var(--teal); stroke-width:3;}
+  .pulse-line, .bracket-part{
+    stroke-dasharray:1000; stroke-dashoffset:1000;
+    animation:draw 1.8s ease forwards;
+  }
+  .bracket-1{animation-delay:.9s;}
+  .bracket-2{animation-delay:1.15s;}
+  .bracket-3{animation-delay:1.4s;}
+  @keyframes draw{ to{stroke-dashoffset:0;} }
+  .pulse-dot{fill:var(--amber); opacity:0; animation:popin .4s ease forwards; animation-delay:1.75s;}
+  @keyframes popin{ to{opacity:1;} }
+
+  @media (prefers-reduced-motion: reduce){
+    .pulse-line,.bracket-part,.pulse-dot{animation:none !important; stroke-dashoffset:0; opacity:1;}
+    .cursor{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* small divider reused between sections */
+  .divider{display:flex; align-items:center; gap:16px; margin:0 0 46px;}
+  .divider .line{flex:1; height:1px; background:var(--border);}
+  .divider svg{width:46px; height:20px; flex-shrink:0;}
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+
+  /* ---------- About ---------- */
+  .about-lede{max-width:66ch; font-size:1.08rem; margin-bottom:44px;}
+  .card-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .id-card{
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:30px 28px; position:relative; overflow:hidden;
+  }
+  .id-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:4px;
+  }
+  .id-card.caregiver::before{background:var(--coral);}
+  .id-card.coder::before{background:var(--teal);}
+  .id-icon{
+    width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    margin-bottom:16px;
+  }
+  .id-card.caregiver .id-icon{background:var(--coral-soft);}
+  .id-card.coder .id-icon{background:var(--teal-soft);}
+  .id-icon svg{width:24px; height:24px;}
+  .trait-list{list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .trait-list li{
+    font-size:0.92rem; color:var(--ink-soft); padding-left:18px; position:relative;
+  }
+  .trait-list li::before{
+    content:"›"; position:absolute; left:0; font-weight:700;
+  }
+  .id-card.caregiver .trait-list li::before{color:var(--coral);}
+  .id-card.coder .trait-list li::before{color:var(--teal);}
+
+  .bridge-line{
+    text-align:center; font-family:var(--font-mono); font-size:0.95rem;
+    color:var(--ink-faint); margin-top:38px;
+  }
+
+  /* ---------- Experience timeline ---------- */
+  .timeline{position:relative; margin-top:6px;}
+  .timeline::before{
+    content:""; position:absolute; left:11px; top:6px; bottom:6px; width:2px;
+    background:var(--border);
+  }
+  .t-item{position:relative; padding-left:44px; margin-bottom:40px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-dot{
+    position:absolute; left:0; top:2px; width:24px; height:24px; border-radius:50%;
+    background:var(--card); border:2px solid var(--coral);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .t-dot::after{content:""; width:8px; height:8px; border-radius:50%; background:var(--coral);}
+  .t-item.tech .t-dot{border-color:var(--teal);}
+  .t-item.tech .t-dot::after{background:var(--teal);}
+  .t-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .t-role{font-family:var(--font-display); font-weight:700; font-size:1.12rem;}
+  .t-meta{font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-faint);}
+  .t-org{font-weight:600; color:var(--ink-soft); font-size:0.95rem; margin-bottom:8px; display:block;}
+  .t-item ul{margin:0; padding-left:18px; color:var(--ink-soft); font-size:0.95rem;}
+  .t-item ul li{margin-bottom:4px;}
+
+  /* ---------- Projects ---------- */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .term-card{
+    background:var(--ink); border-radius:14px; overflow:hidden;
+    box-shadow:0 14px 34px -14px rgba(18,23,43,0.35);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:6px; padding:12px 16px;
+    background:#1D2340; border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .term-bar .dot{width:10px; height:10px; border-radius:50%;}
+  .dot.r{background:#FF5F57;} .dot.y{background:#FEBC2E;} .dot.g{background:#28C840;}
+  .term-title{font-family:var(--font-mono); font-size:0.78rem; color:#8892C4; margin-left:8px;}
+  .term-body{padding:26px 24px 28px; color:#E7E9F5;}
+  .term-body h3{color:#fff; font-family:var(--font-display);}
+  .proj-focus{
+    font-family:var(--font-mono); font-size:0.76rem; color:var(--amber);
+    text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;
+  }
+  .proj-date{font-family:var(--font-mono); font-size:0.76rem; color:#8892C4; margin-bottom:14px; display:block;}
+  .term-body ul{margin:14px 0 0; padding-left:18px; color:#C7CBE8; font-size:0.92rem;}
+  .term-body ul li{margin-bottom:8px;}
+
+  /* ---------- Skills ---------- */
+  .skill-groups{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:30px;}
+  .skill-group h3{font-size:0.85rem; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-faint); margin-bottom:16px; font-weight:700;}
+  .chips{display:flex; flex-wrap:wrap; gap:9px;}
+  .chip{
+    font-size:0.85rem; padding:8px 14px; border-radius:999px; background:var(--card);
+    border:1px solid var(--border); color:var(--ink-soft); font-weight:500;
+  }
+  .skill-group.core .chip{border-color:var(--coral-soft); background:var(--coral-soft); color:#B03A4C;}
+  .skill-group.lang .chip{border-color:var(--teal-soft); background:var(--teal-soft); color:#0A7A6C;}
+  .skill-group.cloud .chip{border-color:#FFE8C7; background:#FFF3E0; color:#B5730B;}
+
+  /* ---------- Volunteering ---------- */
+  .vol-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .vol-card{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:26px;}
+  .vol-card .t-meta{display:block; margin-bottom:6px;}
+  .vol-card h3{margin-bottom:2px;}
+  .vol-card .org{color:var(--ink-faint); font-size:0.88rem; margin-bottom:12px; display:block;}
+  .vol-card p{font-size:0.93rem; margin-bottom:0;}
+
+  /* ---------- Education ---------- */
+  .edu-list{display:flex; flex-direction:column; gap:0;}
+  .edu-item{
+    display:grid; grid-template-columns:170px 1fr; gap:24px; padding:22px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .edu-item:last-child{border-bottom:none;}
+  .edu-item .t-meta{font-size:0.82rem;}
+  .edu-item h3{margin-bottom:4px;}
+  .edu-item .org{color:var(--ink-faint); font-size:0.9rem; margin-bottom:8px; display:block;}
+  .edu-item ul{margin:8px 0 0; padding-left:18px; color:var(--ink-soft); font-size:0.92rem;}
+
+  /* ---------- Contact / Footer ---------- */
+  footer{background:var(--ink); color:#E7E9F5; padding:80px 0 40px;}
+  footer .eyebrow{color:var(--amber);}
+  footer h2{color:#fff;}
+  footer p{color:#B7BCE0;}
+  .contact-row{
+    display:flex; flex-wrap:wrap; gap:16px; margin-top:30px;
+  }
+  .contact-pill{
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+    padding:13px 20px; border-radius:10px; text-decoration:none; color:#fff;
+    font-size:0.94rem; transition:background .15s ease, transform .15s ease;
+  }
+  .contact-pill:hover{background:rgba(255,255,255,0.12); transform:translateY(-2px);}
+  .contact-pill svg{width:18px; height:18px; flex-shrink:0;}
+  .copy-btn{
+    background:none; border:none; color:var(--teal); font-family:var(--font-mono);
+    font-size:0.82rem; cursor:pointer; margin-left:4px; text-decoration:underline;
+  }
+  .foot-bottom{
+    margin-top:60px; padding-top:26px; border-top:1px solid rgba(255,255,255,0.12);
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
+    font-family:var(--font-mono); font-size:0.8rem; color:#7B81AC;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .card-grid, .proj-grid, .vol-grid{grid-template-columns:1fr;}
+    .skill-groups{grid-template-columns:1fr;}
+    section{padding:64px 0;}
+    .edu-item{grid-template-columns:1fr; gap:6px;}
+  }
+  @media (max-width: 700px){
+    nav.links{display:none;}
+    .burger{display:flex;}
+    .mobile-menu{display:block;}
+    .hero{padding:48px 0 24px;}
+    .hero h1{max-width:none;}
+  }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="nav-inner">
+    <a href="#top" class="logo">violet<span>.</span>dev</a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-tag">Software developer in training · Stockholm, Sweden</div>
+      <h1>From bedside to <em>backend.</em></h1>
+      <p class="hero-sub">I used to monitor vitals. Now I monitor uptime. Same steady hands, same
+        instinct to stay calm when something's flatlining. Just a different kind of patient,
+        and this one occasionally throws a stack trace instead of a fever.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/Violet-Ogombo" target="_blank" rel="noopener noreferrer">
+          View my GitHub ↗
+        </a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/violet-o-167a72272" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="mailto:violet.akinyi@outlook.com">Say hej 👋</a>
+      </div>
+
+      <div class="pulse-wrap" aria-hidden="true">
+        <svg viewBox="0 0 1200 130" preserveAspectRatio="none">
+          <path class="pulse-line" d="M0,70 L130,70 L150,70 L165,20 L182,118 L198,45 L214,70 L360,70" />
+          <circle class="pulse-dot" cx="360" cy="70" r="5"></circle>
+          <path class="bracket-part bracket-1" d="M480,38 L432,70 L480,102" />
+          <path class="bracket-part bracket-2" d="M560,102 L610,20" />
+          <path class="bracket-part bracket-3" d="M690,38 L738,70 L690,102" />
+          <path class="pulse-line" d="M820,70 L1200,70" style="animation-delay:1.6s;" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow">$ whoami<span class="cursor"></span></div>
+      <h2 class="reveal">Two disciplines. One way of working.</h2>
+      <p class="about-lede reveal">I'm currently training as a software developer at Grit:lab, a
+        teacher-less programme in Åland that hands you a problem and expects you to argue your way
+        to a solution with Go, Java, JavaScript, documentation, and whoever's sitting next to you.
+        Before that, I worked in healthcare, where "figure it out, calmly, right now" was just
+        Tuesday. Turns out that instinct transfers surprisingly well to debugging.</p>
+
+      <div class="card-grid">
+        <div class="id-card caregiver reveal">
+          <div class="id-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#FF5D73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h4l2 8 4-16 2 8h8"/>
+            </svg>
+          </div>
+          <h3>The Caregiver</h3>
+          <p>Healthcare assistant, au pair, and volunteer caregiver years spent reading
+            situations quickly, documenting precisely, and staying level-headed when the pressure
+            spikes.</p>
+          <ul class="trait-list">
+            <li>Calm, clear decisions under pressure</li>
+            <li>Precise, careful documentation</li>
+            <li>Deep empathy, cross-cultural ease</li>
+          </ul>
+        </div>
+        <div class="id-card coder reveal">
+          <div class="id-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00B8A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3>The Coder</h3>
+          <p>Full-stack curious, self-taught by necessity. Comfortable wiring together APIs,
+            databases, and AI workflows and increasingly at home in the cloud.</p>
+          <ul class="trait-list">
+            <li>Teacher-less, self-directed problem solving</li>
+            <li>Backend, auth &amp; database architecture</li>
+            <li>Agentic workflows &amp; prompt engineering</li>
+          </ul>
+        </div>
+      </div>
+      <p class="bridge-line reveal">// read the signs → stay calm → fix what's broken</p>
+    </div>
+  </section>
+
+  <!-- ================= EXPERIENCE ================= -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="eyebrow">$ cat career.log<span class="cursor"></span></div>
+      <h2 class="reveal" style="margin-bottom:46px;">Work experience</h2>
+
+      <div class="timeline">
+        <div class="t-item reveal">
+          <div class="t-dot"></div>
+          <div class="t-head">
+            <span class="t-role">Au Pair</span>
+            <span class="t-meta">01/2023 — Present</span>
+          </div>
+          <span class="t-org">Private Family · Stockholm, Sweden</span>
+          <ul>
+            <li>Adapted quickly to a new cultural environment, managing household schedules and
+              safety standards with reliability.</li>
+          </ul>
+        </div>
+
+        <div class="t-item reveal">
+          <div class="t-dot"></div>
+          <div class="t-head">
+            <span class="t-role">Healthcare Assistant</span>
+            <span class="t-meta">03/2022 — 07/2022</span>
+          </div>
+          <span class="t-org">Jumuia Hospital · Nairobi, Kenya</span>
+          <ul>
+            <li><strong>Crisis management:</strong> handled high-pressure situations requiring calm
+              decision-making and immediate prioritization, a mindset now applied to
+              troubleshooting technical incidents.</li>
+            <li><strong>Data accuracy:</strong> recorded daily patient observations and metrics to
+              support ongoing medical assessments, with precision in documentation.</li>
+            <li><strong>Standards &amp; compliance:</strong> maintained strict adherence to hygiene
+              and sterilization protocols.</li>
+          </ul>
+        </div>
+
+        <div class="t-item reveal">
+          <div class="t-dot"></div>
+          <div class="t-head">
+            <span class="t-role">Professional Dancer</span>
+            <span class="t-meta">01/2015 — 01/2021</span>
+          </div>
+          <span class="t-org">Safari Park Hotel · Nairobi, Kenya</span>
+          <ul>
+            <li><strong>Agile collaboration:</strong> toured with bands and performed in dynamic
+              environments, requiring rapid adaptability to choreography changes and strong
+              teamwork.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROJECTS ================= -->
+  <section id="projects" style="background:var(--bg-alt);">
+    <div class="wrap">
+      <div class="eyebrow">$ ls ~/projects<span class="cursor"></span></div>
+      <h2 class="reveal" style="margin-bottom:46px;">Independent projects</h2>
+
+      <div class="proj-grid">
+        <div class="term-card reveal">
+          <div class="term-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="term-title">little-sketch-guide.app</span>
+          </div>
+          <div class="term-body">
+            <span class="proj-date">01/2026 · Independent Project · Fullstack Prototype</span>
+            <h3>Little Sketch Guide</h3>
+            <p style="color:#C7CBE8; margin-bottom:10px;">A GenAI application for children.</p>
+            <div class="proj-focus">Focus: Backend, Auth, Prototyping</div>
+            <ul>
+              <li>Built a GenAI-powered app using Lovable.dev for rapid frontend prototyping.</li>
+              <li>Integrated Supabase for the backend — designing and managing the database
+                architecture (SQL) and user authentication flows.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="term-card reveal">
+          <div class="term-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="term-title">grinderella.workflow</span>
+          </div>
+          <div class="term-body">
+            <span class="proj-date">07/2025 · Independent Project</span>
+            <h3>Grinderella</h3>
+            <p style="color:#C7CBE8; margin-bottom:10px;">Autonomous AI assistant &amp; integration engine.</p>
+            <div class="proj-focus">Focus: API Integration, Webhooks</div>
+            <ul>
+              <li>Architected and deployed an automated agentic workflow using n8n to connect
+                previously siloed systems: Telegram, OpenAI, and Google Calendar.</li>
+              <li>Engineered robust webhook communication to capture real-time inputs from
+                Telegram, process them through LLM logic, and trigger automated scheduling APIs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SKILLS ================= -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="eyebrow">$ skills --list<span class="cursor"></span></div>
+      <h2 class="reveal" style="margin-bottom:46px;">What I bring to the table</h2>
+
+      <div class="skill-groups">
+        <div class="skill-group core reveal">
+          <h3>Core &amp; Methodologies</h3>
+          <div class="chips">
+            <span class="chip">Agile Prototyping</span>
+            <span class="chip">API Development &amp; Consumption</span>
+            <span class="chip">Cross-System Communication</span>
+            <span class="chip">Critical Thinking</span>
+            <span class="chip">Customer Experience</span>
+            <span class="chip">Logical Problem Solving</span>
+            <span class="chip">n8n (Agentic Workflows)</span>
+            <span class="chip">Prompt Engineering</span>
+            <span class="chip">Relational Data Modeling</span>
+            <span class="chip">Supabase</span>
+            <span class="chip">System Architecture</span>
+            <span class="chip">SQL &amp; Data Flow</span>
+            <span class="chip">Webhooks</span>
+            <span class="chip">Pair Programming</span>
+            <span class="chip">Peer-to-Peer Learning</span>
+            <span class="chip">Team Player</span>
+          </div>
+        </div>
+        <div class="skill-group lang reveal">
+          <h3>Languages</h3>
+          <div class="chips">
+            <span class="chip">Go</span>
+            <span class="chip">Java</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">HTML / CSS</span>
+          </div>
+        </div>
+        <div class="skill-group cloud reveal">
+          <h3>Cloud &amp; Tools</h3>
+          <div class="chips">
+            <span class="chip">AWS (Cloud Practitioner, in progress)</span>
+            <span class="chip">Docker</span>
+            <span class="chip">GitHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VOLUNTEERING ================= -->
+  <section id="volunteering" style="background:var(--bg-alt);">
+    <div class="wrap">
+      <div class="eyebrow">$ git log --volunteer<span class="cursor"></span></div>
+      <h2 class="reveal" style="margin-bottom:46px;">Volunteering &amp; leadership</h2>
+
+      <div class="vol-grid">
+        <div class="vol-card reveal">
+          <span class="t-meta">07/2023 — Present</span>
+          <h3>Volunteer Caregiver — Elderly Care</h3>
+          <span class="org">Villa Tollare</span>
+          <p>Collaborated with nursing staff to care for residents while actively learning
+            Swedish and integrating into a new language environment. Provided companionship and
+            support, exercising empathy and patience to improve residents' daily quality of life.</p>
+        </div>
+        <div class="vol-card reveal">
+          <span class="t-meta">09/2022 — 02/2023</span>
+          <h3>Volunteer School Nurse Assistant</h3>
+          <span class="org">Buruburu Baptist Church School · Special Needs Unit</span>
+          <p>Assisted students with mobility challenges and daily needs, fostering a safe,
+            positive learning environment. Acted as a liaison between students and teachers to
+            resolve concerns with creative communication strategies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section id="education">
+    <div class="wrap">
+      <div class="eyebrow">$ cat education.md<span class="cursor"></span></div>
+      <h2 class="reveal" style="margin-bottom:16px;">Education</h2>
+
+      <div class="edu-list reveal">
+        <div class="edu-item">
+          <span class="t-meta">01/2024 — Present</span>
+          <div>
+            <h3>Software Developer — 2-Year Vocational Programme</h3>
+            <span class="org">Grit:lab, Åland</span>
+            <ul>
+              <li>Built full-stack applications using Go and JavaScript with no prior tech experience.</li>
+              <li>Developing skills in cloud infrastructure and deployment strategies, independently.</li>
+              <li>Thriving in a "figure it out" culture that mirrors the problem-solving nature of
+                modern engineering.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="edu-item">
+          <span class="t-meta">03/2022 — 07/2022</span>
+          <div>
+            <h3>Certificate in Healthcare Assistant</h3>
+            <span class="org">Gocare Institute, Kenya</span>
+          </div>
+        </div>
+        <div class="edu-item">
+          <span class="t-meta">01/2009 — 01/2013</span>
+          <div>
+            <h3>Secondary Education</h3>
+            <span class="org">Kenya Secondary Education, Kenya</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= CONTACT / FOOTER ================= -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="eyebrow">$ echo "let's connect"<span class="cursor"></span></div>
+    <h2>Let's build something that doesn't flatline.</h2>
+    <p style="max-width:52ch;">Based in Stockholm, open to opportunities in software
+      development, and always up for a good conversation about code, cloud, or the strange
+      joy of diving into new things entirely.</p>
+
+    <div class="contact-row">
+      <a class="contact-pill" href="https://github.com/Violet-Ogombo" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.74.5 12.02c0 5.02 3.29 9.28 7.86 10.79.57.1.79-.25.79-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.02 1.76 2.68 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.4-5.26 5.69.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.66.8.55A10.53 10.53 0 0 0 23.5 12c0-6.28-5.23-11.52-11.5-11.52Z"/></svg>
+        github.com/Violet-Ogombo
+      </a>
+      <a class="contact-pill" href="https://www.linkedin.com/in/violet-o-167a72272" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.38 4.27 5.47v6.27ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.11 20.45H3.56V9h3.55v11.45Z"/></svg>
+        LinkedIn
+      </a>
+      <a class="contact-pill" href="mailto:violet.akinyi@outlook.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        violet.akinyi@outlook.com
+        <button class="copy-btn" id="copyEmail" type="button">copy</button>
+      </a>
+      <a class="contact-pill" href="tel:+46724470771">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        +46 72 447 0771
+      </a>
+      <span class="contact-pill" style="cursor:default;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Stockholm, Sweden
+      </span>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Violet Ogombo</span>
+      <span>Built with Go-given determination and JavaScript curiosity.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    "use strict";
+
+    // Header shadow on scroll
+    var header = document.getElementById('site-header');
+    function onScroll(){
+      if(window.scrollY > 8){ header.classList.add('scrolled'); }
+      else { header.classList.remove('scrolled'); }
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+
+    // Mobile menu toggle
+    var burger = document.getElementById('burger');
+    var mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', function(){
+      var isOpen = mobileMenu.classList.toggle('open');
+      burger.classList.toggle('open', isOpen);
+      burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    mobileMenu.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click', function(){
+        mobileMenu.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Scroll reveal
+    var revealEls = document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
+      revealEls.forEach(function(el){ io.observe(el); });
+    } else {
+      revealEls.forEach(function(el){ el.classList.add('in-view'); });
+    }
+
+    // Copy email to clipboard
+    var copyBtn = document.getElementById('copyEmail');
+    if(copyBtn){
+      copyBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var email = 'violet.akinyi@outlook.com';
+        function done(){
+          var original = copyBtn.textContent;
+          copyBtn.textContent = 'copied!';
+          setTimeout(function(){ copyBtn.textContent = original; }, 1600);
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(email).then(done).catch(done);
+        } else {
+          done();
+        }
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
